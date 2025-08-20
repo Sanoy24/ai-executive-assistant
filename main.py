@@ -35,7 +35,6 @@ sg = sendgrid.SendGridAPIClient(api_key=env_values.get("SENDGRID_API_KEY"))
 
 class AIExecutiveAssistant:
     def __init__(self):
-        self.gemini_model = client.models.get("gemini-2.5-flash")
         self.gmail_service = None
         self.calendar_service = None
         self.credentials = None
@@ -146,7 +145,7 @@ class AIExecutiveAssistant:
                 """
 
             response = await client.models.generate_content(
-                model=self.gemini_model, contents=extraction_prompt
+                model="gemini-2.0-flash-001", contents=extraction_prompt
             )
 
             # Clean and parse JSON response
@@ -324,7 +323,7 @@ class AIExecutiveAssistant:
             """
 
             response = await client.models.generate_content(
-                model=self.gemini_model, contents=confirmation_prompt
+                model="gemini-2.0-flash-001", contents=confirmation_prompt
             )
             email_body = response.text.strip()
 
@@ -481,7 +480,7 @@ class AIExecutiveAssistant:
             """
 
             response = await client.models.generate_content(
-                model=self.gemini_model, contents=classification_prompt
+                model="gemini-2.0-flash-001", contents=classification_prompt
             )
 
             response_text = response.text.strip()
@@ -523,7 +522,7 @@ class AIExecutiveAssistant:
             """
 
             response = await client.models.generate_content(
-                model=self.gemini_model, contents=response_prompt
+                model="gemini-2.0-flash-001", contents=response_prompt
             )
             response_body = response.text.strip()
 
@@ -619,7 +618,9 @@ class AIExecutiveAssistant:
             Keep it concise but informative (under 200 words).
             """
 
-            response = await self.gemini_model.generate_content_async(summary_prompt)
+            response = client.models.generate_content(
+                model="gemini-2.0-flash-001", contents=summary_prompt
+            )
             summary_text = response.text.strip()
 
             return {
